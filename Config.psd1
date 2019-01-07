@@ -28,18 +28,18 @@ Configuration module - feel free to edit this one to customize behavior
         "Groove Salad.pls" = "http://somafm.com/groovesalad130.pls"
     }
     CommonStoreApps = @{
-		"Microsoft.HEIFImageExtension" = "9PMMSR1CGPWG"
-		"dotPDNLLC.paint.net" = "9NBHCS1LX4R0"
-		"5319275A.WhatsAppDesktop" = "9NKSQGP7F2NH"
-		"TelegramMessengerLLP.TelegramDesktop" = "9NZTWSQNTD0S"
-		"SpotifyAB.SpotifyMusic" = "9NCBCSZSJRSB"
+        "Microsoft.HEIFImageExtension" = "9PMMSR1CGPWG"
+        "dotPDNLLC.paint.net" = "9NBHCS1LX4R0"
+        "5319275A.WhatsAppDesktop" = "9NKSQGP7F2NH"
+        "TelegramMessengerLLP.TelegramDesktop" = "9NZTWSQNTD0S"
+        "SpotifyAB.SpotifyMusic" = "9NCBCSZSJRSB"
     }
     DeveloperMode = 1
     Linux = 1
     DevStoreApps = @{
-		"91750D7E.Slack" = "9WZDNCRDK3WP"
-		"CanonicalGroupLimited.UbuntuonWindows" = "9NBLGGH4MSV6"
-		"Microsoft.WinDbg" = "9PGJGD53TN86"
+        "91750D7E.Slack" = "9WZDNCRDK3WP"
+        "CanonicalGroupLimited.UbuntuonWindows" = "9NBLGGH4MSV6"
+        "Microsoft.WinDbg" = "9PGJGD53TN86"
     }
     WindowsCapabilities = @{
         OpenSSH = "OpenSSH.Client~~~~0.0.1.0"
