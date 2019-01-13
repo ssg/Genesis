@@ -2,14 +2,14 @@
 This module contains library cmdlets for Genesis
 #>
 
-$RestartNeeded = $false
+$script:RestartNeeded = $false
 
 function Set-RestartNeeded {
-    $RestartNeeded = $true
+    $script:RestartNeeded = $true
 }
 
 function Get-RestartNeeded {
-    return $RestartNeeded
+    return $script:RestartNeeded
 }
 
 function Assert-SpecialFolder {
