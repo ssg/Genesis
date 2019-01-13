@@ -16,6 +16,9 @@ Configuration module - feel free to edit this one to customize behavior
             PreferredLocation = "D:\down"
         }
     }
+    IgnoreKeepAwakeRequestsFromProcesses = @{
+        "chrome.exe" = "EXECUTION" # forgetting chrome open would prevent machine from going to sleep
+    }
     DefaultBrowser = @{
         Name = "Chrome"
         LocalPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"

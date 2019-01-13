@@ -27,6 +27,16 @@ function Assert-SpecialFolder {
     }
 }
 
+function Assert-NoKeepAwake {
+    param(
+        $Process,
+        $Mode
+    )
+    # it's harmless to redo this configuration each time so we don't
+    # necessarily check for existing config values
+    & powercfg /requestsoverride PROCESS $Process $Mode
+}
+
 function Assert-RegistryValue {
     param(
         $Path,

@@ -129,6 +129,15 @@ Assert-Configuration "Windows capabilities" {
     return $result
 }
 
+if ($Config.IgnoreKeepAwakeRequestsFromProcesses) {
+    Assert-Configuration "Ignore keep awake requests" {
+        $Config.IgnoreKeepAwakeRequestsFromProcesses.Keys | ForEach-Object {
+            $mode = $Config.IgnoreKeepAwakeRequestsFromProcesses[$_]
+            Assert-NoKeepAwake -Process $_ -Mode $mode
+        }
+    }
+}
+
 Assert-Configuration "Development related Microsoft Store apps" {
     [void] (Assert-StoreAppsInstalled $Config.DevStoreApps)
 }
