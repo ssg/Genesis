@@ -30,7 +30,7 @@ if (!$Force) {
 }
 
 $Config = Import-PowerShellDataFile Config.psd1
-Import-Module -Force Lib    # force reload
+Import-Module -Force (Join-Path $PSScriptRoot Lib)    # force reload
 
 $ErrorActionPreference = "Stop"
 
