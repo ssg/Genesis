@@ -27,6 +27,7 @@ Configuration module - feel free to edit this one to customize behavior
     }
     CommonStoreApps = @{
         "Microsoft.HEIFImageExtension" = "9PMMSR1CGPWG"
+        "Microsoft.HEVCVideoExtensions" = "9NMZLZ57R3T7"
         "dotPDNLLC.paint.net" = "9NBHCS1LX4R0"
         "5319275A.WhatsAppDesktop" = "9NKSQGP7F2NH"
         "TelegramMessengerLLP.TelegramDesktop" = "9NZTWSQNTD0S"
