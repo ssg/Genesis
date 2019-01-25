@@ -84,7 +84,7 @@ Assert-Configuration "Default browser" {
         if ((Get-DefaultBrowser) -ne $defaultBrowser.Tag) {
             Write-Output "nope :("
             Write-Output "Please ensure $($defaultBrowser.Name) is the default browser - opening settings app"
-            Start-Process "ms-settings:default-apps"
+            Start-Process "ms-settings:defaultapps"
             Wait-ForEnter
         }
     }
