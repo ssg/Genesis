@@ -76,12 +76,12 @@ $Config.SpecialFolders.Keys | ForEach-Object {
 }
 
 Assert-Configuration "Default browser" {
-    $defaultBrowser = $Config.DefaultBrowser
+    $defaultBrowser = (Get-Browser $Config.DefaultBrowser)
     if (!(Test-Path $defaultBrowser.LocalPath)) {
         Start-Process $defaultBrowser.DownloadUrl
     } else {
-        Write-SameLine "$($defaultBrowser.Name) already installed, checking if default..."
-        if ((Get-DefaultBrowser) -ne $defaultBrowser.Tag) {
+        Write-SameLine "$($Config.DefaultBrowser) already installed, checking if default..."
+        if (!(Test-DefaultBrowser $defaultBrowser.Tag)) {
             Write-Output "nope :("
             Write-Output "Please ensure $($defaultBrowser.Name) is the default browser - opening settings app"
             Start-Process "ms-settings:defaultapps"

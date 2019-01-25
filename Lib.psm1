@@ -4,6 +4,26 @@ This module contains library cmdlets for Genesis
 
 $script:RestartNeeded = $false
 
+$Browsers = @{
+    "Chrome" = @{
+        LocalPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+        DownloadUrl = "https://www.google.com/chrome/"
+        Tag = "ChromeHTML"
+    }
+    "Firefox" = @{
+        LocalPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
+        DownloadUrl = "https://www.mozilla.org/en-US/firefox/new/"
+        Tag = "FirefoxURL"
+    }
+}
+
+function Get-Browser {
+    param(
+        $Name
+    )
+    return $Browsers[$Name]
+}
+
 function Set-RestartNeeded {
     $script:RestartNeeded = $true
 }
@@ -115,9 +135,13 @@ function Assert-WindowsCapability {
     return $false
 }
 
-function Get-DefaultBrowser {
+function Test-DefaultBrowser {
+    param (
+        $Tag
+    )
     return (Get-ItemPropertyValue `
-        "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice" ProgId)
+        "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice" ProgId) `
+        -like "$Tag*"
 }
 
 function Assert-Configuration {

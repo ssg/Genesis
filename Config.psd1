@@ -19,12 +19,7 @@ Configuration module - feel free to edit this one to customize behavior
     IgnoreKeepAwakeRequestsFromProcesses = @{
         "chrome.exe" = "EXECUTION" # forgetting chrome open would prevent machine from going to sleep
     }
-    DefaultBrowser = @{
-        Name = "Chrome"
-        LocalPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-        DownloadUrl = "https://www.google.com/chrome/"
-        Tag = "ChromeHTML" #  Firefox = "FirefoxURL"
-    }
+    DefaultBrowser = "Firefox" # defined browsers are in Lib.psm1
     DesktopUrlShortcuts = @{
         "Radio Paradise.m3u" = "https://www.radioparadise.com/m3u/aac-320.m3u"
         "SceneSat.m3u" = "https://scenesat.com/listen/normal/hi.m3u"
