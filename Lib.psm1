@@ -4,6 +4,8 @@ This module contains library cmdlets for Genesis
 
 $script:RestartNeeded = $false
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls13
+
 $Browsers = @{
     "Chrome" = @{
         LocalPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
