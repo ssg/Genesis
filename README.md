@@ -21,8 +21,10 @@ I don't want to spend too much time on this project, that's one of the
 reasons why I used PowerShell as it was the simplest way to do it. I'd
 appreciate some features though:
 
-- Add checks for non-Store apps (chocolatey integration maybe?) although
+* [X] Add checks for non-Store apps (chocolatey integration maybe?) although
   I'm not very fond of Chocolatey.
+* [ ] Easier installation using PowerShellGet 
+* [ ] Get config file as a parameter
 
 # License
 
