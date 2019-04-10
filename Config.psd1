@@ -33,6 +33,7 @@ Configuration module - feel free to edit this one to customize behavior
         "git"
         "openvpn"
         "tortoisehg"
+        "sql-server-management-studio"
     )
     WindowsFeatures = @(
         "NetFx3" # required for Saitek X-55 drivers

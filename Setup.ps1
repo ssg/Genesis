@@ -156,6 +156,30 @@ Assert-Configuration "Development related Microsoft Store apps" {
     [void] (Assert-StoreAppsInstalled $Config.DevStoreApps)
 }
 
+if ($Config.ChocolateyPackages) {
+    Assert-Configuration "Chocolatey" {
+        if (!(Test-Path -Path "$env:ProgramData\Chocolatey")) {
+            Set-ExecutionPolicy Bypass -Scope Process -Force
+            Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+            return $true
+        }
+        return $false
+    }
+    Assert-Configuration "Chocolatey package provider" {
+        if (!(Get-PackageProvider "chocolatey" -ErrorAction SilentlyContinue)) {
+            $provider = Install-PackageProvider "chocolatey" -Force
+            return $true
+        }
+        return $false
+    }
+    Assert-Configuration "Chocolatey packages" {
+        $result = $false
+        $Config.ChocolateyPackages | ForEach-Object {
+            $result = $result -or (Assert-ChocolateyPackage $_)
+        }
+    }
+}
+
 ### End of Configuration ###
 
 Write-Host "Well that's been a pleasure!"

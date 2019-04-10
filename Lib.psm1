@@ -123,6 +123,21 @@ function Assert-DesktopShortcut {
     return $false
 }
 
+function Assert-ChocolateyPackage {
+    param(
+        $Name
+    )
+    Write-Host -NoNewLine "  $Name..."
+    if (choco list --id-only --local-only --limit-output --exact $Name | Where-Object { $_ -eq $Name }) {
+        Write-Host "OK"
+        return $false
+    }
+    Write-Host -NoNewLine "installing..."
+    Install-Package -ProviderName chocolatey -Name $Name -Force
+    Write-Host "OK"
+    return $true
+}
+
 function Assert-WindowsFeature {
     param(
         $Name
