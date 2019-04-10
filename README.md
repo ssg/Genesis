@@ -11,6 +11,10 @@ for that. It looked very complicated for my purposes and requires a client runni
 on the machine which is absolutely unnecessary for my personal use. I just needed
 a simple automation.
 
+# Running Genesis
+
+Just type `.\Setup -Force` on a PowerShell prompt. Beware that it would change your system configuration permanently.
+
 # Roadmap
 
 I don't want to spend too much time on this project, that's one of the

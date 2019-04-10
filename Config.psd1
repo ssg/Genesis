@@ -5,6 +5,7 @@ Configuration module - feel free to edit this one to customize behavior
 @{
     MaxRecycleBinCapacity = 1024 # MB - applies to all drives on the system
     KeyboardDelay = 0
+    EnableHexNumPad = 1 # enables Alt-+ method for inputting hex Unicode values 1 = enabled, 0 = disabled
     TaskBar = @{
         ShowPeopleButton = 0
         ShowTaskViewButton = 0

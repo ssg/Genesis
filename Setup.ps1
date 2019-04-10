@@ -59,6 +59,12 @@ Assert-Configuration "Keyboard delay" {
         -Value $Config.KeyboardDelay)
 }
 
+Assert-Configuration "Hex NumPad" {
+    [void] (Assert-RegistryValue -Path "HKCU:\Control Panel\Input Method" -Name "EnableHexNumPad" -Type String `
+        -Value $Config.EnableHexNumPad.ToString())
+
+}
+
 Assert-Configuration "Taskbar buttons" {
     [void] (Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
         -Name "People" -Type Dword -Value $Config.TaskBar.ShowPeopleButton)
