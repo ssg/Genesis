@@ -4,7 +4,7 @@ This module contains library cmdlets for Genesis
 
 $script:RestartNeeded = $false
 
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls13
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $Browsers = @{
     "Chrome" = @{
@@ -120,6 +120,20 @@ function Assert-DesktopShortcut {
         return $true
     }
     Write-Host -NoNewLine "nice..."
+    return $false
+}
+
+function Assert-WindowsFeature {
+    param(
+        $Name
+    )
+    $feature = Get-WindowsOptionalFeature -FeatureName $Name -Online
+    if ($feature -and ($feature.State -eq "Disabled"))
+    {
+        Write-SameLine "enabling $Name..."
+        Enable-WindowsOptionalFeature -FeatureName $Name -Online -All -NoRestart
+        return $true
+    }
     return $false
 }
 

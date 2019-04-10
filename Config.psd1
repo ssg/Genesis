@@ -26,9 +26,16 @@ Configuration module - feel free to edit this one to customize behavior
         "SceneSat.m3u" = "https://scenesat.com/listen/normal/hi.m3u"
         "Groove Salad.pls" = "http://somafm.com/groovesalad130.pls"
     }
-    CommonChocoApps = @(
+    ChocolateyPackages = @(
         "notepad2"
+        "7zip"
         "vlc"
+        "git"
+        "openvpn"
+        "tortoisehg"
+    )
+    WindowsFeatures = @(
+        "NetFx3" # required for Saitek X-55 drivers
     )
     CommonStoreApps = @{
         "dotPDNLLC.paint.net" = "9NBHCS1LX4R0"
@@ -43,9 +50,6 @@ Configuration module - feel free to edit this one to customize behavior
         "CanonicalGroupLimited.UbuntuonWindows" = "9NBLGGH4MSV6"
         "Microsoft.WinDbg" = "9PGJGD53TN86"
     }
-    DevChocoApps = @(
-        "git"
-    )
     WindowsCapabilities = @{
         OpenSSH = "OpenSSH.Client~~~~0.0.1.0"
     }

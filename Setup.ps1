@@ -96,6 +96,14 @@ Assert-Configuration "Default browser" {
     }
 }
 
+if ($Config.WindowsFeatures) {
+    Assert-Configuration "Windows features"  {
+        $Config.WindowsFeatures | ForEach-Object {
+            Assert-WindowsFeature $_
+        }
+    }
+}
+
 Assert-Configuration "Common Microsoft Store apps" {
     [void] (Assert-StoreAppsInstalled $Config.CommonStoreApps)
 }
