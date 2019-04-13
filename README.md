@@ -23,8 +23,9 @@ appreciate some features though:
 
 * [X] Add checks for non-Store apps (chocolatey integration maybe?) although
   I'm not very fond of Chocolatey.
-* [ ] Easier installation using PowerShellGet 
 * [ ] Get config file as a parameter
+* [ ] Easier installation using PowerShellGet 
+* [ ] Use a plugin architecture
 
 # License
 
