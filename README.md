@@ -13,19 +13,26 @@ a simple automation.
 
 # Running Genesis
 
-Just type `.\Setup -Force` on a PowerShell prompt. Beware that it would change your system configuration permanently.
+First, examine the contents of `SampleConfig.psd1` and edit as necessary. Don't
+forget that your changes will be permanent and irreversible (I hope to fix that
+in the future). Then run the command below on a PowerShell prompt:
+
+.\Setup SampleConfig.psd1
+
+It will make necessary changes on your system and install Chocolatey and required
+packages as needed. Genesis changes system settings, it never touches
 
 # Roadmap
 
 I don't want to spend too much time on this project, that's one of the
 reasons why I used PowerShell as it was the simplest way to do it. I'd
-appreciate some features though:
+like to add some features though:
 
 * [X] Add checks for non-Store apps (chocolatey integration maybe?) although
   I'm not very fond of Chocolatey.
-* [ ] Get config file as a parameter
-* [ ] Easier installation using PowerShellGet 
-* [ ] Use a plugin architecture
+* [X] Get config file as a parameter
+* [ ] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`
+* [ ] Modularize configuration handling better
 
 # License
 
