@@ -20,7 +20,10 @@ in the future). Then run the command below on a PowerShell prompt:
     .\Setup SampleConfig.psd1
 
 It will make necessary changes on your system and install Chocolatey and required
-packages as needed. Genesis changes system settings, it never touches
+packages as needed. Genesis changes system settings, it never removes a file, or 
+uninstalls an app. So the worst can be weird settings and some additional unwanted
+software installed on your computer. You should still be careful running tools like
+these though.
 
 # Roadmap
 
