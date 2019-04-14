@@ -173,10 +173,7 @@ if ($Config.ChocolateyPackages) {
         return $false
     }
     Assert-Configuration "Chocolatey packages" {
-        $result = $false
-        $Config.ChocolateyPackages | ForEach-Object {
-            $result = $result -or (Assert-ChocolateyPackage $_)
-        }
+        return Assert-ChocolateyPackages $Config.ChocolateyPackages
     }
 }
 

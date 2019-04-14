@@ -91,7 +91,7 @@ function Assert-RegistryValue {
     }
     $prop = (Get-ItemPropertyValue -Path $Path -Name $Name -ErrorAction SilentlyContinue)
     if ($prop -ne $Value) {
-        Write-Host -NoNewLine "updating..."
+        Write-SameLine "updating..."
         Set-ItemProperty -Path $Path -Name $Name -Type $Type -Value $Value
         return $true
     }
@@ -142,19 +142,24 @@ function Assert-DesktopShortcut {
     return $false
 }
 
-function Assert-ChocolateyPackage {
+function Assert-ChocolateyPackages {
     param(
-        $Name
+        [string[]]$Packages
     )
-    Write-Host -NoNewLine "  $Name..."
-    if (choco list --id-only --local-only --limit-output --exact $Name | Where-Object { $_ -eq $Name }) {
+    Write-Host
+    $result = $false
+    $list = choco list --id-only --local-only --limit-output
+    [System.Collections.Generic.HashSet[string]]$installedPackages = $list
+    foreach ($name in $Packages) {
+        Write-SameLine "  $name..."
+        if ($installedPackages -notcontains $name) {
+            Write-Host -NoNewLine "installing..."
+            & choco install $Name -y
+            $result = $true
+        }
         Write-Host "OK"
-        return $false
     }
-    Write-Host -NoNewLine "installing..."
-    & choco install $Name -y
-    Write-Host "OK"
-    return $true
+    return $result
 }
 
 function Assert-WindowsFeature {
