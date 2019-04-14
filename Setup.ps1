@@ -18,27 +18,24 @@
 #Requires -Version 5.0
 
 param(
-    [switch]$Force = $false
+    [Parameter(Mandatory = $true)]$ConfigFile
 )
 
-if (!$Force) {
-    Write-Warning "This script is dangerous and can destroy data on your computer"
-    Write-Warning "Please do not run unless you know what you're doing"
-    Write-Warning "It's a good idea to check out Config.psd1 first"
-    Write-Warning "Use -Force parameter in order to run it"
-    break
+$ErrorActionPreference = "Stop"
+
+if (!(Test-Path -PathType Leaf $ConfigFile)) {
+    Write-Error "Configuration file '$ConfigFile' not found"
+    exit
 }
 
-$Config = Import-PowerShellDataFile Config.psd1
+$Config = Import-PowerShellDataFile $ConfigFile
 Import-Module -Force (Join-Path $PSScriptRoot Lib)    # force reload
-
-$ErrorActionPreference = "Stop"
 
 Assert-Configuration "Computer name" {
     $computerName = $env:ComputerName
     if ($computerName -like 'DESKTOP-*') {
         Write-Host "not set"
-        $computerName = Read-Host "Enter computer name"
+        $computerName = Read-Host "Enter a computer name"
         Rename-Computer -NewName $computerName
         Write-Output "Issued rename request. Will probably take effect after restart"
         Set-RestartNeeded
