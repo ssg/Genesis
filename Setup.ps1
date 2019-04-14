@@ -7,7 +7,7 @@
     and it can make you lose data. DO NOT RUN ON YOUR MACHINE unless you
     know what you're doing.
 
-    To customize the behavior you can edit Config.psd1
+    To customize the behavior you can edit SampleConfig.psd1
 
 .NOTES
     Version:        0.4 alpha
@@ -47,52 +47,46 @@ Assert-Configuration "Computer name" {
 
 Write-Output "Setting up $env:ComputerName"
 
-Assert-Configuration "Recycle Bin capacity on all drives" {
+Assert-Configuration "Keyboard" {
+    [void] (Assert-RegistryValue -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Type Dword `
+        -Value $Config.Keyboard.Delay)
+    [void] (Assert-RegistryValue -Path "HKCU:\Control Panel\Input Method" -Name "EnableHexNumPad" -Type String `
+        -Value $Config.Keyboard.HexNumPad.ToString())
+}
+
+Assert-Configuration "Explorer" {
+    # file extensions
+    [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
+        -Name "HideFileExt" -Type Dword -Value $Config.Explorer.ShowFileExtensions)
+    # recycle bin capacity
     Get-ChildItem "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Bitbucket\Volume" `
     | ForEach-Object {
-        Set-RecycleBinCapacity -Volume (Split-Path $_.Name -Leaf) -Capacity $Config.MaxRecycleBinCapacity
+        Set-RecycleBinCapacity -Volume (Split-Path $_.Name -Leaf) -Capacity $Config.Explorer.MaxRecycleBinCapacity
     }
 }
 
-Assert-Configuration "Keyboard delay" {
-    [void] (Assert-RegistryValue -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Type Dword `
-        -Value $Config.KeyboardDelay)
-}
-
-Assert-Configuration "Hex NumPad" {
-    [void] (Assert-RegistryValue -Path "HKCU:\Control Panel\Input Method" -Name "EnableHexNumPad" -Type String `
-        -Value $Config.EnableHexNumPad.ToString())
-
-}
-
-Assert-Configuration "Taskbar buttons" {
-    $group = $Config.TaskBar
+Assert-Configuration "Taskbar" {
     [void] (Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-        -Name "People" -Type Dword -Value $group.ShowPeopleButton)
+        -Name "People" -Type Dword -Value $Config.TaskBar.ShowPeopleButton)
     [void] (Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-        -Name "ShowTaskViewButton" -Type Dword -Value $group.ShowTaskViewButton)
+        -Name "ShowTaskViewButton" -Type Dword -Value $Config.TaskBar.ShowTaskViewButton)
     [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" `
-        -Name "SearchboxTaskbarMode" -Type Dword -Value $group.SearchboxTaskbarMode)
-}
-
-Assert-Configuration "Explorer settings" {
-    [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-        -Name "HideFileExt" -Type Dword -Value $Config.Explorer.ShowFileExtensions)
+        -Name "SearchboxTaskbarMode" -Type Dword -Value $Config.TaskBar.SearchboxTaskbarMode)
 }
 
 # Secondary drive
 
 $Config.SpecialFolders.Keys | ForEach-Object {
-    $folder = $Config.SpecialFolders[$_]
-    Assert-SpecialFolder -Name $_ -RegName $folder.RegName -PreferredLocation $folder.PreferredLocation
+    Assert-SpecialFolder -Name $_ -PreferredLocation $Config.SpecialFolders[$_]
 }
 
 Assert-Configuration "Default browser" {
     $defaultBrowser = (Get-Browser $Config.DefaultBrowser)
-    if (!(Test-Path $defaultBrowser.LocalPath)) {
+    $builtIn = !($defaultBrowser.LocalPath);
+    if (!$builtIn -and !(Test-Path $defaultBrowser.LocalPath)) {
         Start-Process $defaultBrowser.DownloadUrl
     } else {
-        Write-SameLine "$($Config.DefaultBrowser) already installed, checking if default..."
+        Write-SameLine "$($Config.DefaultBrowser) is already installed, checking if it's the default..."
         if (!(Test-DefaultBrowser $defaultBrowser.Tag)) {
             Write-Output "nope :("
             Write-Output "Please ensure $($defaultBrowser.Name) is the default browser - opening settings app"

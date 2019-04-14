@@ -17,6 +17,20 @@ $Browsers = @{
         DownloadUrl = "https://www.mozilla.org/en-US/firefox/new/"
         Tag = "FirefoxURL"
     }
+    "Edge" = @{
+        Tag = "AppXq0fevzme2pys62n3e0fbqa7peapykr8v"
+    }
+    "InternetExplorer" = @{
+        Tag = "IE.HTTP"
+    }
+}
+
+$SpecialFolders = @{
+    "Desktop" = "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}"
+    "Documents" = "{FDD39AD0-238F-46AF-ADB4-6C85480369C7}"
+    "Downloads" = "{374DE290-123F-4565-9164-39C4925E467B}"
+    "Favorites" = "{1777F761-68AD-4D8A-87BD-30B759FA33DD}"
+    "ProgramData" = "{62AB5D82-FDC1-4DC3-A9DD-070D1D495D97}"
 }
 
 function Get-Browser {
@@ -37,15 +51,15 @@ function Get-RestartNeeded {
 function Assert-SpecialFolder {
     param(
         $Name,
-        $RegName,
         $PreferredLocation
     )
     if (!(Test-Path $PreferredLocation)) {
         Write-Output "Creating new $Name folder at: $PreferredLocation"
         mkdir $PreferredLocation
     }
+    $regName = $SpecialFolders[$Name]
     Assert-Configuration "$Name folder location" {
-        [void] (Assert-SpecialFolderPath -Name $RegName -FolderPath $PreferredLocation)
+        [void] (Assert-SpecialFolderPath -Name $regName -FolderPath $PreferredLocation)
     }
 }
 
@@ -69,6 +83,7 @@ function Assert-RegistryValue {
     if ($null -eq $Value) {
         # skip this if relevant configuration information is missing
         # therefore the function is called unnecessarily
+        Write-Warning "Missing configuration option for registry $Path\$Name"
         return $false
     }
     if (!(Test-Path $Path)) {
@@ -98,9 +113,8 @@ function Assert-StoreAppsInstalled {
         $Apps
     )
     Write-Host ""
-    $Apps.Keys | ForEach-Object {
-        $name = $_
-        Write-Host -NoNewLine "  $name..."
+    foreach ($name in $Apps.Keys) {
+        Write-SameLine "  $name..."
         $item = (Get-AppxPackage | Where-Object { $_.Name -eq $name })
         if ($null -eq $item) {
             $productId = $Apps[$_]
@@ -120,7 +134,7 @@ function Assert-DesktopShortcut {
     $desktop = Get-DesktopPath
     $filename = (Join-Path $desktop $Name)
     if (!(Test-Path $filename)) {
-        Write-Host -NoNewLine "downloading..."
+        Write-SameLine "downloading..."
         Invoke-WebRequest -Uri $Url -OutFile $filename
         return $true
     }
@@ -164,7 +178,7 @@ function Assert-WindowsCapability {
     )
     $state = (Get-WindowsCapability -Online -Name $Id).State
     if ($state -ne 'Installed') {
-        Write-Host -NoNewline "installing $Name..."
+        Write-SameLine "installing $Name..."
         Add-WindowsCapability -Online -Name $Id
         return $true
     }
@@ -185,7 +199,7 @@ function Assert-Configuration {
         $Name,
         $Script
     )
-    Write-Host -NoNewLine "Checking $Name..."
+    Write-SameLine "· $Name..."
     if (& $Script) {
         Write-Host -NoNewline "restart needed..."
     }
@@ -211,10 +225,7 @@ function Wait-ForEnter {
     Read-Host | Out-Null
 }
 
-function Write-SameLine {
-    param(
-        $Message
-    )
+function Write-SameLine($Message) {
     Write-Host -NoNewline $Message
 }
 
