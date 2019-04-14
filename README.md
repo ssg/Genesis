@@ -35,6 +35,7 @@ like to add some features though:
   I'm not very fond of Chocolatey.
 * [X] Get config file as a parameter
 * [ ] Switch to a more portable configuration format
+* [ ] Ability to generate config files from existing state of a system
 * [ ] Support PowerShell Confirm/WhatIf system
 * [ ] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`
 * [ ] Modularize configuration handling better
