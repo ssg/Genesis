@@ -20,7 +20,7 @@ The format is a PowerShell object but boolean values are denoted with 0 = false,
         SearchboxTaskbarMode = 1 # 0 = hidden, 1 = button, 2 = big box
     }
 
-    # currently supported keys are: Downloads, Desktop, Documents, Favorites, ProgramData
+    # supported keys are: Downloads, Desktop, Documents, Favorites, ProgramData
     SpecialFolders = @{
         Downloads = "D:\down"
     }
@@ -45,6 +45,9 @@ The format is a PowerShell object but boolean values are denoted with 0 = false,
         "7zip"
     )
 
+    # You can find out the names of all supported Windows features by running the
+    # PowerShell command:
+    # Get-WindowsOptionalFeature -Online | Select FeatureName | Sort FeatureName
     WindowsFeatures = @(
         "NetFx3"                # required for Saitek X-55 drivers
     )
