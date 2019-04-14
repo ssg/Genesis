@@ -26,7 +26,7 @@ The format is a PowerShell object but boolean values are denoted with 0 = false,
     }
 
     # supported values are "Chrome", "Firefox", "Edge" or "IE"
-    # if browser is not installed - the chocolatey package is installed
+    # if browser is not installed - it will be installed.
     # if it's not default, relevant settings page is opened
     DefaultBrowser = "Chrome"
 

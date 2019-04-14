@@ -9,12 +9,12 @@ $script:RestartNeeded = $false
 $Browsers = @{
     "Chrome" = @{
         LocalPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-        DownloadUrl = "https://www.google.com/chrome/"
+        ChocolateyPackage = "googlechrome"
         Tag = "ChromeHTML"
     }
     "Firefox" = @{
         LocalPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
-        DownloadUrl = "https://www.mozilla.org/en-US/firefox/new/"
+        ChocolateyPackage = "firefox"
         Tag = "FirefoxURL"
     }
     "Edge" = @{
@@ -58,9 +58,9 @@ function Assert-SpecialFolder {
         mkdir $PreferredLocation
     }
     $regName = $SpecialFolders[$Name]
-    Assert-Configuration "$Name folder location" {
-        [void] (Assert-SpecialFolderPath -Name $regName -FolderPath $PreferredLocation)
-    }
+    Write-SameLine "  $Name..."
+    [void] (Assert-SpecialFolderPath -Name $regName -FolderPath $PreferredLocation)
+    Write-Host "OK"
 }
 
 function Assert-NoKeepAwake {

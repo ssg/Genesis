@@ -71,17 +71,31 @@ Assert-Configuration "Taskbar" {
         -Name "SearchboxTaskbarMode" -Type Dword -Value $Config.TaskBar.SearchboxTaskbarMode)
 }
 
-# Secondary drive
+if ($Config.SpecialFolders) {
+    Assert-Configuration "Special Folders" {
+        Write-Host ""
+        $Config.SpecialFolders.Keys | ForEach-Object {
+            Assert-SpecialFolder -Name $_ -PreferredLocation $Config.SpecialFolders[$_]
+        }
+    }
+}
 
-$Config.SpecialFolders.Keys | ForEach-Object {
-    Assert-SpecialFolder -Name $_ -PreferredLocation $Config.SpecialFolders[$_]
+Assert-Configuration "Chocolatey" {
+    if (!(Test-Path -Path "$env:ProgramData\Chocolatey")) {
+        # install chocolatey
+        Set-ExecutionPolicy Bypass -Scope Process -Force
+        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+        return $true
+    }
+    return $false
 }
 
 Assert-Configuration "Default browser" {
     $defaultBrowser = (Get-Browser $Config.DefaultBrowser)
     $builtIn = !($defaultBrowser.LocalPath);
     if (!$builtIn -and !(Test-Path $defaultBrowser.LocalPath)) {
-        Start-Process $defaultBrowser.DownloadUrl
+        Write-SameLine "installing..."
+        & choco install $defaultBrowser.ChocolateyPackage
     } else {
         Write-SameLine "$($Config.DefaultBrowser) is already installed, checking if it's the default..."
         if (!(Test-DefaultBrowser $defaultBrowser.Tag)) {
@@ -154,21 +168,6 @@ Assert-Configuration "Development related Microsoft Store apps" {
 }
 
 if ($Config.ChocolateyPackages) {
-    Assert-Configuration "Chocolatey" {
-        if (!(Test-Path -Path "$env:ProgramData\Chocolatey")) {
-            Set-ExecutionPolicy Bypass -Scope Process -Force
-            Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-            return $true
-        }
-        return $false
-    }
-    Assert-Configuration "Chocolatey package provider" {
-        if (!(Get-PackageProvider "chocolatey" -ErrorAction SilentlyContinue)) {
-            $provider = Install-PackageProvider "chocolatey" -Force
-            return $true
-        }
-        return $false
-    }
     Assert-Configuration "Chocolatey packages" {
         return Assert-ChocolateyPackages $Config.ChocolateyPackages
     }
