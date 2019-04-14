@@ -10,7 +10,7 @@
     To customize the behavior you can edit SampleConfig.psd1
 
 .NOTES
-    Version:        0.4 alpha
+    Version:        0.5 alpha
     Author:         Sedat Kapanoglu
 #>
 
