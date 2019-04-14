@@ -66,6 +66,11 @@ function Assert-RegistryValue {
         $Type,
         $Value
     )
+    if ($null -eq $Value) {
+        # skip this if relevant configuration information is missing
+        # therefore the function is called unnecessarily
+        return $false
+    }
     if (!(Test-Path $Path)) {
         New-Item -Path $Path -Force
     }
@@ -133,7 +138,7 @@ function Assert-ChocolateyPackage {
         return $false
     }
     Write-Host -NoNewLine "installing..."
-    Install-Package -ProviderName chocolatey -Name $Name -Force
+    & choco install $Name -y
     Write-Host "OK"
     return $true
 }

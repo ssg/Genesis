@@ -66,12 +66,18 @@ Assert-Configuration "Hex NumPad" {
 }
 
 Assert-Configuration "Taskbar buttons" {
+    $group = $Config.TaskBar
     [void] (Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-        -Name "People" -Type Dword -Value $Config.TaskBar.ShowPeopleButton)
+        -Name "People" -Type Dword -Value $group.ShowPeopleButton)
     [void] (Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-        -Name "ShowTaskViewButton" -Type Dword -Value $Config.TaskBar.ShowTaskViewButton)
+        -Name "ShowTaskViewButton" -Type Dword -Value $group.ShowTaskViewButton)
     [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" `
-        -Name "SearchboxTaskbarMode" -Type Dword -Value $Config.TaskBar.SearchboxTaskbarMode)
+        -Name "SearchboxTaskbarMode" -Type Dword -Value $group.SearchboxTaskbarMode)
+}
+
+Assert-Configuration "Explorer settings" {
+    [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
+        -Name "HideFileExt" -Type Dword -Value $Config.Explorer.ShowFileExtensions)
 }
 
 # Secondary drive
