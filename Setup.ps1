@@ -175,7 +175,7 @@ if ($Config.ChocolateyPackages) {
 
 ### End of Configuration ###
 
-Write-Host "Well that's been a pleasure!"
+Write-Host "Well, that's been a pleasure!"
 if (Get-RestartNeeded) {
     Write-Host "Please restart the computer to ensure changes take effect"
 }
