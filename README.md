@@ -17,7 +17,7 @@ First, examine the contents of `SampleConfig.psd1` and edit as necessary. Don't
 forget that your changes will be permanent and irreversible (I hope to fix that
 in the future). Then run the command below on a PowerShell prompt:
 
-.\Setup SampleConfig.psd1
+    .\Setup SampleConfig.psd1
 
 It will make necessary changes on your system and install Chocolatey and required
 packages as needed. Genesis changes system settings, it never touches
