@@ -1,4 +1,4 @@
-<#
+﻿<#
 This module contains library cmdlets for Genesis
 #>
 
