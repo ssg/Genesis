@@ -45,6 +45,7 @@ like to add some features though:
 * [ ] Ability to generate config files from existing state of a system.
 * [ ] Support PowerShell Confirm/WhatIf system.
 * [ ] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`.
+* [ ] Rollback changes
 * [ ] Modularize configuration handling better.
 * [ ] End-user friendly (GUI, profile management etc.).
 
