@@ -8,8 +8,11 @@ deal about PowerShell in return, which was a bonus.
 
 You might I ask why I didn't use something like Microsoft Configuration Manager
 for that. It looked very complicated for my purposes and requires a client running
-on the machine which is absolutely unnecessary for my personal use. I just needed
-a simple automation.
+on the machine which is absolutely unnecessary for my personal use. I later found
+out about Desired State Configuration which looks much better and doesn't require 
+a client as far as I know, but by default it lacks many types of resources that 
+I require and finding them in the wild seemed to be hard. I just needed a simple 
+automation. I decided to use this for a learning opportunity.
 
 # Running Genesis
 
