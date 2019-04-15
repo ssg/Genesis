@@ -39,6 +39,7 @@ like to add some features though:
 * [ ] Support PowerShell Confirm/WhatIf system
 * [ ] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`
 * [ ] Modularize configuration handling better
+* [ ] End-user friendly (GUI, profile management etc.)
 
 # License
 
