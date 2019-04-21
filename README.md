@@ -11,7 +11,7 @@ for that. It looked very complicated for my purposes and requires a client runni
 on the machine which is absolutely unnecessary for my personal use. I just needed
 a simple automation.
 
-# Running Genesis
+## Running Genesis
 
 First, examine the contents of `SampleConfig.psd1` and edit as necessary. Don't
 forget that your changes will be permanent and irreversible (I hope to fix that
@@ -20,12 +20,12 @@ in the future). Then run the command below on a PowerShell prompt:
     .\Setup SampleConfig.psd1
 
 It will make necessary changes on your system and install Chocolatey and required
-packages as needed. Genesis changes system settings, it never removes a file, or 
+packages as needed. Genesis changes system settings, it never removes a file, or
 uninstalls an app. So the worst can be weird settings and some additional unwanted
 software installed on your computer. You should still be careful running tools like
 these though.
 
-# Roadmap
+## Roadmap
 
 I don't want to spend too much time on this project, that's one of the
 reasons why I used PowerShell as it was the simplest way to do it. I'd
@@ -40,6 +40,6 @@ like to add some features though:
 * [ ] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`
 * [ ] Modularize configuration handling better
 
-# License
+## License
 
 MIT License. See LICENSE file for details.
