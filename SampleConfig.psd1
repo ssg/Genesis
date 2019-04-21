@@ -20,6 +20,10 @@ The format is a PowerShell object but boolean values are denoted with 0 = false,
         SearchboxTaskbarMode = 1 # 0 = hidden, 1 = button, 2 = big box
     }
 
+    Network = @{
+        ActiveConnectionNetworkCategory = "Private" # Public/Private
+    }
+
     # supported keys are: Downloads, Desktop, Documents, Favorites, ProgramData
     SpecialFolders = @{
         Downloads = "D:\down"

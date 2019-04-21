@@ -51,6 +51,28 @@ Assert-Configuration "Keyboard" {
         -Value $Config.Keyboard.HexNumPad.ToString())
 }
 
+$category = $Config.Network.ActiveConnectionNetworkCategory
+if ($category) {
+    Assert-Configuration "Network" {
+        $profile = Get-NetConnectionProfile
+        if ($profile.Count -eq 0) {
+            Write-Warning "no active connections found...skipping"
+            return $false
+        }
+        if ($profile.Count -eq 1) {
+            Write-Warning "multiple connections found...ambigious...skipping"
+            return $false
+        }
+        if ($profile -and $category -and ($profile.NetworkCategory -ne $category)) {
+            Write-Host "changing from $($profile.NetworkCategory) to $category"
+            Set-NetConnectionProfile -InterfaceIndex $profile.InterfaceIndex -NetworkCategory $category
+            return $true
+        }
+        Write-SameLine "already $($profile.NetworkCategory)..."
+        return $false
+    }
+}
+
 Assert-Configuration "Explorer" {
     # file extensions
     [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
