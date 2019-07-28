@@ -112,12 +112,16 @@ function Assert-StoreAppsInstalled {
     param(
         $Apps
     )
+    if ($Apps -eq $null) {
+        Write-Warning "Store apps config not found"
+        return $false
+    }
     Write-Host ""
     foreach ($name in $Apps.Keys) {
         Write-SameLine "  $name..."
         $item = (Get-AppxPackage | Where-Object { $_.Name -eq $name })
         if ($null -eq $item) {
-            $productId = $Apps[$_]
+            $productId = $Apps[$name]
             Write-Host "needs to be installed"
             Start-Process "https://www.microsoft.com/store/productId/$productId"
         } else {
