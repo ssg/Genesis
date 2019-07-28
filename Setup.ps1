@@ -116,7 +116,7 @@ Assert-Configuration "Default browser" {
     $builtIn = !($defaultBrowser.LocalPath);
     if (!$builtIn -and !(Test-Path $defaultBrowser.LocalPath)) {
         Write-SameLine "installing..."
-        & choco install $defaultBrowser.ChocolateyPackage
+        & choco install $defaultBrowser.ChocolateyPackage -y
     } else {
         Write-SameLine "$($Config.DefaultBrowser) is already installed, checking if it's the default..."
         if (!(Test-DefaultBrowser $defaultBrowser.Tag)) {
