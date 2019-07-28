@@ -49,6 +49,19 @@ The format is a PowerShell object but boolean values are denoted with 0 = false,
         "7zip"
     )
 
+    CachedCredentials = @(
+        @{
+            Type = "Generic"
+            Name = "some.generic.credential"
+            User = "username"
+        },
+        @{
+            Type = "Domain"
+            Name = "some.domain.credential"
+            User = "username"
+        }
+    )
+
     # You can find out the names of all supported Windows features by running the
     # PowerShell command:
     # Get-WindowsOptionalFeature -Online | Select FeatureName | Sort FeatureName
