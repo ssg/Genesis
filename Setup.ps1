@@ -18,19 +18,18 @@
 #Requires -Version 5.0
 
 param(
-    [Parameter(Mandatory = $true)]$ConfigFile
+    [Parameter(Mandatory)]
+    [Microsoft.PowerShell.DesiredStateConfiguration.ArgumentToConfigurationDataTransformation()]
+    [hashtable]$ConfigFile
 )
 
 $ErrorActionPreference = "Stop"
 
-if (!(Test-Path -PathType Leaf $ConfigFile)) {
-    Write-Error "Configuration file '$ConfigFile' not found"
-    exit
-}
-
-$Config = Import-PowerShellDataFile $ConfigFile
+$Config = $ConfigFile
+Write-Debug "Importing Lib"
 Import-Module -Force (Join-Path $PSScriptRoot Lib)    # force reload
 
+Write-Debug "Starting asserts"
 Assert-Configuration "Computer name" {
     $computerName = $env:ComputerName
     if ($computerName -like 'DESKTOP-*') {
