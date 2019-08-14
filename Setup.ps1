@@ -184,6 +184,14 @@ if ($Config.IgnoreKeepAwakeRequestsFromProcesses) {
     }
 }
 
+Assert-Configuration "Windows Defender exclusions" {
+    $exclusions = $WindowsDefender.ExclusionPaths
+    foreach ($path in $exclusions) {
+        Add-MpPreference -ExclusionPath $path
+    }
+    return !!$exclusions
+}
+
 Assert-Configuration "Development related Microsoft Store apps" {
     [void] (Assert-StoreAppsInstalled $Config.DevStoreApps)
 }
