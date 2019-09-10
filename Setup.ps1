@@ -48,6 +48,14 @@ Assert-Configuration "Keyboard" {
         -Value $Config.Keyboard.Delay)
     [void] (Assert-RegistryValue -Path "HKCU:\Control Panel\Input Method" -Name "EnableHexNumPad" -Type String `
         -Value $Config.Keyboard.HexNumPad.ToString())
+
+    # crash on Ctrl+ScrollLock handling
+    [void] (Assert-RegistryValue -Path "HKLM:\System\CurrentControlSet\Services\kbdhid\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
+        -Value $Config.Keyboard.HexNumPad)
+    [void] (Assert-RegistryValue -Path "HKLM:\System\CurrentControlSet\Services\i8042prt\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
+        -Value $Config.Keyboard.HexNumPad)
+    [void] (Assert-RegistryValue -Path "HKLM:\System\CurrentControlSet\Services\hyperkbd\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
+        -Value $Config.Keyboard.HexNumPad)
 }
 
 $category = $Config.Network.ActiveConnectionNetworkCategory

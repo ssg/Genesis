@@ -5,8 +5,9 @@ The format is a PowerShell object but boolean values are denoted with 0 = false,
 
 @{
     Keyboard = @{
-        Delay = 0           # min delay - maps to KeyboardDelay registry value
-        HexNumPad = 1       # enables Alt-+ method for inputting hex Unicode values 1 = enabled, 0 = disabled
+        Delay = 0             # min delay - maps to KeyboardDelay registry value
+        HexNumPad = 1         # enables Alt-+ method for inputting hex Unicode values 1 = enabled, 0 = disabled
+        CrashOnCtrlScroll = 0 # 1 = enable on-demand blue screens when Ctrl+ScrollLock is pressed 0 = do nothing (recommended)
     }
 
     Explorer = @{
