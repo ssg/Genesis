@@ -58,9 +58,8 @@ function Assert-SpecialFolder {
         mkdir $PreferredLocation
     }
     $regName = $SpecialFolders[$Name]
-    Write-SameLine "  $Name..."
+    Write-Progress "  $Name..."
     [void] (Assert-SpecialFolderPath -Name $regName -FolderPath $PreferredLocation)
-    Write-Host "OK"
 }
 
 function Assert-NoKeepAwake {
@@ -91,7 +90,7 @@ function Assert-RegistryValue {
     }
     $prop = (Get-ItemPropertyValue -Path $Path -Name $Name -ErrorAction SilentlyContinue)
     if ($prop -ne $Value) {
-        Write-SameLine "updating..."
+        Write-Progress "updating..."
         Set-ItemProperty -Path $Path -Name $Name -Type $Type -Value $Value
         return $true
     }
@@ -116,16 +115,15 @@ function Assert-StoreAppsInstalled {
         Write-Warning "Store apps config not found"
         return $false
     }
-    Write-Host ""
     foreach ($name in $Apps.Keys) {
-        Write-SameLine "  $name..."
+        Write-Progress "  $name..."
         $item = (Get-AppxPackage | Where-Object { $_.Name -eq $name })
         if ($null -eq $item) {
             $productId = $Apps[$name]
-            Write-Host "needs to be installed"
+            Write-Output "needs to be installed"
             Start-Process "https://www.microsoft.com/store/productId/$productId"
         } else {
-            Write-Host "OK"
+            Write-Output "OK"
         }
     }
 }
@@ -138,11 +136,11 @@ function Assert-DesktopShortcut {
     $desktop = Get-DesktopPath
     $filename = (Join-Path $desktop $Name)
     if (!(Test-Path $filename)) {
-        Write-SameLine "downloading..."
+        Write-Progress "downloading..."
         Invoke-WebRequest -Uri $Url -OutFile $filename
         return $true
     }
-    Write-Host -NoNewLine "nice..."
+    Write-Progress "nice..."
     return $false
 }
 
@@ -150,18 +148,16 @@ function Assert-ChocolateyPackages {
     param(
         [string[]]$Packages
     )
-    Write-Host
     $result = $false
     $list = choco list --id-only --local-only --limit-output
     [System.Collections.Generic.HashSet[string]]$installedPackages = $list
     foreach ($name in $Packages) {
-        Write-SameLine "  $name..."
+        Write-Progress $name
         if ($installedPackages -notcontains $name) {
-            Write-Host -NoNewLine "installing..."
+            Write-Progress -Status "installing"
             & choco install $Name -y
             $result = $true
         }
-        Write-Host "OK"
     }
     return $result
 }
@@ -173,7 +169,7 @@ function Assert-WindowsFeature {
     $feature = Get-WindowsOptionalFeature -FeatureName $Name -Online
     if ($feature -and ($feature.State -eq "Disabled"))
     {
-        Write-SameLine "enabling $Name..."
+        Write-Progress "enabling $Name..."
         Enable-WindowsOptionalFeature -FeatureName $Name -Online -All -NoRestart
         return $true
     }
@@ -187,7 +183,7 @@ function Assert-WindowsCapability {
     )
     $state = (Get-WindowsCapability -Online -Name $Id).State
     if ($state -ne 'Installed') {
-        Write-SameLine "installing $Name..."
+        Write-Progress "installing $Name..."
         Add-WindowsCapability -Online -Name $Id
         return $true
     }
@@ -208,11 +204,10 @@ function Assert-Configuration {
         $Name,
         $Script
     )
-    Write-SameLine "· $Name..."
+    Write-Progress $Name
     if (& $Script) {
-        Write-Host -NoNewline "restart needed..."
+        Write-Output "restart needed..."
     }
-    Write-Host "OK"
 }
 
 function Set-RecycleBinCapacity {
@@ -230,11 +225,6 @@ function Get-DesktopPath {
 }
 
 function Wait-ForEnter {
-    Write-Host -NoNewLine "Press ENTER to continue..."
+    Write-Output "Press ENTER to continue..."
     Read-Host | Out-Null
 }
-
-function Write-SameLine($Message) {
-    Write-Host -NoNewline $Message
-}
-

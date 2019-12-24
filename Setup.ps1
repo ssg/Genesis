@@ -33,7 +33,7 @@ Write-Debug "Starting asserts"
 Assert-Configuration "Computer name" {
     $computerName = $env:ComputerName
     if ($computerName -like 'DESKTOP-*') {
-        Write-Host "not set"
+        Write-Output "not set"
         $computerName = Read-Host "Enter a computer name"
         Rename-Computer -NewName $computerName
         Write-Output "Issued rename request. Will probably take effect after restart"
@@ -71,11 +71,11 @@ if ($category) {
             return $false
         }
         if ($profile -and $category -and ($profile.NetworkCategory -ne $category)) {
-            Write-Host "changing from $($profile.NetworkCategory) to $category"
+            Write-Output "changing from $($profile.NetworkCategory) to $category"
             Set-NetConnectionProfile -InterfaceIndex $profile.InterfaceIndex -NetworkCategory $category
             return $true
         }
-        Write-SameLine "already $($profile.NetworkCategory)..."
+        Write-Output "already $($profile.NetworkCategory)..."
         return $false
     }
 }
@@ -102,7 +102,7 @@ Assert-Configuration "Taskbar" {
 
 if ($Config.SpecialFolders) {
     Assert-Configuration "Special Folders" {
-        Write-Host ""
+        Write-Output ""
         $Config.SpecialFolders.Keys | ForEach-Object {
             Assert-SpecialFolder -Name $_ -PreferredLocation $Config.SpecialFolders[$_]
         }
@@ -123,10 +123,10 @@ Assert-Configuration "Default browser" {
     $defaultBrowser = (Get-Browser $Config.DefaultBrowser)
     $builtIn = !($defaultBrowser.LocalPath);
     if (!$builtIn -and !(Test-Path $defaultBrowser.LocalPath)) {
-        Write-SameLine "installing..."
+        Write-Output "installing..."
         & choco install $defaultBrowser.ChocolateyPackage -y
     } else {
-        Write-SameLine "$($Config.DefaultBrowser) is already installed, checking if it's the default..."
+        Write-Output "$($Config.DefaultBrowser) is already installed, checking if it's the default..."
         if (!(Test-DefaultBrowser $defaultBrowser.Tag)) {
             Write-Output "nope :("
             Write-Output "Please ensure $($defaultBrowser.Name) is the default browser - opening settings app"
@@ -161,7 +161,7 @@ if ($Config.Linux -eq 1) {
         $feature = Get-WindowsOptionalFeature -FeatureName Microsoft-Windows-Subsystem-Linux -Online
         if ($feature -and ($feature.State -eq "Disabled"))
         {
-            Write-SameLine "enabling..."
+            Write-Progress "enabling..."
             Enable-WindowsOptionalFeature -FeatureName Microsoft-Windows-Subsystem-Linux -Online -All `
                 -LimitAccess -NoRestart
             return $true
@@ -212,7 +212,7 @@ if ($Config.ChocolateyPackages) {
 
 ### End of Configuration ###
 
-Write-Host "Well, that's been a pleasure!"
+Write-Output "Well, that's been a pleasure!"
 if (Get-RestartNeeded) {
-    Write-Host "Please restart the computer to ensure changes take effect"
+    Write-Output "Please restart the computer to ensure changes take effect"
 }
