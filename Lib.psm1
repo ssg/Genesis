@@ -88,7 +88,7 @@ function Assert-RegistryValue {
     if (!(Test-Path $Path)) {
         New-Item -Path $Path -Force
     }
-    $prop = (Get-ItemPropertyValue -Path $Path -Name $Name -ErrorAction SilentlyContinue)
+    $prop = (Get-ItemProperty -Path $Path | Select-Object -ExpandProperty $Name)
     if ($prop -ne $Value) {
         Write-Progress "updating..."
         Set-ItemProperty -Path $Path -Name $Name -Type $Type -Value $Value
@@ -152,7 +152,7 @@ function Assert-ChocolateyPackages {
     $list = choco list --id-only --local-only --limit-output
     [System.Collections.Generic.HashSet[string]]$installedPackages = $list
     foreach ($name in $Packages) {
-        Write-Progress $name
+        Write-Progress "$name..."
         if ($installedPackages -notcontains $name) {
             Write-Progress -Status "installing"
             & choco install $Name -y
