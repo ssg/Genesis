@@ -40,8 +40,8 @@ like to add some features though:
 * [X] Add checks for non-Store apps (chocolatey integration maybe?) although
   I'm not very fond of Chocolatey.
 * [X] Get config file as a parameter.
-* [ ] Use more-readable boolean values instead of 0 and 1 for flags options.
-* [ ] Switch to a more portable configuration format.
+* [ ] Switch to a portable configuration format.
+* [ ] Use readable boolean values instead of 0 and 1 for flags options.
 * [ ] Ability to generate config files from existing state of a system.
 * [ ] Support PowerShell Confirm/WhatIf system.
 * [ ] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`.
