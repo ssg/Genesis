@@ -154,7 +154,7 @@ function Assert-ChocolateyPackages {
     foreach ($name in $Packages) {
         Write-Progress "$name..."
         if ($installedPackages -notcontains $name) {
-            Write-Progress -Status "installing"
+            Write-Progress "installing"
             & choco install $Name -y
             $result = $true
         }
