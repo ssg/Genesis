@@ -62,12 +62,13 @@ Assert-Configuration "Keyboard" {
         -Value $Config.Keyboard.HexNumPad.ToString())
 
     # crash on Ctrl+ScrollLock handling
-    [void] (Assert-RegistryValue -Path "HKLM:\System\CurrentControlSet\Services\kbdhid\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
-        -Value $Config.Keyboard.HexNumPad)
-    [void] (Assert-RegistryValue -Path "HKLM:\System\CurrentControlSet\Services\i8042prt\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
-        -Value $Config.Keyboard.HexNumPad)
-    [void] (Assert-RegistryValue -Path "HKLM:\System\CurrentControlSet\Services\hyperkbd\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
-        -Value $Config.Keyboard.HexNumPad)
+    $prefix = "HKLM:\System\CurrentControlSet\Services"
+    [void] (Assert-RegistryValue -Path "$prefix\kbdhid\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
+        -Value $Config.Keyboard.CrashOnCtrlScroll)
+    [void] (Assert-RegistryValue -Path "$prefix\i8042prt\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
+        -Value $Config.Keyboard.CrashOnCtrlScroll)
+    [void] (Assert-RegistryValue -Path "$prefix\hyperkbd\Parameters" -Name "CrashOnCtrlScroll" -Type Dword `
+        -Value $Config.Keyboard.CrashOnCtrlScroll)
 }
 
 $category = $Config.Network.ActiveConnectionNetworkCategory
