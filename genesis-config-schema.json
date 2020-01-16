@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "$id": "genesis-config-schema.json",
+    "$id": "https://raw.githubusercontent.com/ssg/Genesis/master/genesis-config-schema.json",
     "title": "Genesis Configuration",
     "description": "This schema defines the configuration file format used by Genesis",
 

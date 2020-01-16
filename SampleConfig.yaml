@@ -1,7 +1,7 @@
 # Sample Configuration - feel free to edit this one to customize behavior
 # Boolean values are currently denoted with 0: false, 1: true (to be changed)
 
-$schema: genesis-config-schema.json
+$schema: https://raw.githubusercontent.com/ssg/Genesis/master/genesis-config-schema.json
 
 Keyboard:
   Delay: 0 # min delay - maps to KeyboardDelay registry value
