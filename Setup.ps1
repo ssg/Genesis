@@ -7,10 +7,10 @@
     and it can make you lose data. DO NOT RUN ON YOUR MACHINE unless you
     know what you're doing.
 
-    To customize the behavior you can edit SampleConfig.psd1
+    To customize the behavior you can edit SampleConfig.yaml
 
 .NOTES
-    Version:        0.6 alpha
+    Version:        0.7 alpha
     Author:         Sedat Kapanoglu
 #>
 
@@ -19,13 +19,25 @@
 
 param(
     [Parameter(Mandatory)]
-    [Microsoft.PowerShell.DesiredStateConfiguration.ArgumentToConfigurationDataTransformation()]
-    [hashtable]$ConfigFile
+    [ValidateScript({
+        if (Test-Path -PathType Leaf $_) {
+            return $true
+        }
+        throw "File not found: $_"
+    })]
+    [System.IO.FileInfo]$ConfigFile
 )
 
 $ErrorActionPreference = "Stop"
 
-$Config = $ConfigFile
+Write-Debug "Importing PSYaml"
+if (!(Get-Module -Name FXPSYaml)) {
+    Write-Debug "Not installed - installing"
+    Install-Module -Force FXPSYaml
+}
+Import-Module FXPSYaml
+$Config = ConvertFrom-Yaml -Path $ConfigFile
+
 Write-Debug "Importing Lib"
 Import-Module -Force (Join-Path $PSScriptRoot Lib)    # force reload
 

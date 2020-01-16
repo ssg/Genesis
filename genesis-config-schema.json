@@ -1,0 +1,204 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$id": "genesis-config-schema.json",
+    "title": "Genesis Configuration",
+    "description": "This schema defines the configuration file format used by Genesis",
+
+    "properties": {
+        "Keyboard": {
+            "description": "Keyboard related settings",
+            "properties": {
+                "Delay": {
+                    "description": "Keyboard press repeat delay",
+                    "$ref": "#/definitions/intbool"
+                },
+                "HexNumPad": {
+                    "description": "Enables or disables hexadecimal input of Unicode characters",
+                    "$ref": "#/definitions/intbool"
+                },
+                "CrashOnCtrlScroll": {
+                    "description": "Enables or disables bluescreen when Ctrl-ScrollLock is pressed",
+                    "$ref": "#/definitions/intbool"
+                }
+            }
+        },
+
+        "Explorer": {
+            "description": "Windows Explorer settings",
+            "properties": {
+                "ShowFileExtensions": {
+                    "description": "Show filename extensions",
+                    "$ref": "#/definitions/intbool"
+                }                ,
+                "MaxRecycleBinCapacity": {
+                    "description": "Maximum Recycle Bin capacity in megabytes",
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        },
+
+        "TaskBar": {
+            "description": "TaskBar settings",
+            "properties": {
+                "ShowPeopleButton": {
+                    "description": "Show People button",
+                    "$ref": "#/definitions/intbool"
+                },
+
+                "ShowTaskViewButton": {
+                    "description": "Show Task View button",
+                    "$ref": "#/definitions/intbool"
+                },
+
+                "SearchboxTaskbarMode": {
+                    "description": "TaskBar mode of the search box (0: hidden, 1: button, 2: big box)",
+                    "type": "integer",
+                    "enum": [ 0, 1, 2 ]
+                }
+            }
+        },
+
+        "Network": {
+            "description": "Network settings",
+            "properties": {
+                "ActiveNetworkConnectionCategory": {
+                    "description": "Setup the active network connection as public or private",
+                    "type": "string",
+                    "enum": [ "Private", "Public" ]
+                }
+            }
+        },
+
+        "SpecialFolders": {
+            "description": "Special folder settings",
+            "properties": {
+                "Downloads": {
+                    "description": "Location of the Downloads folder",
+                    "type": "string"
+                }
+            }
+        },
+
+        "WindowsDefender": {
+            "description": "Windows Defender settings",
+            "properties": {
+                "ExclusionPaths": {
+                    "description": "List of paths to be excluded from Windows Defender's realtime scanning",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+
+        "DefaultBrowser": {
+            "description": "Default web browser",
+            "type": "string",
+            "enum": [ "Chrome", "Firefox", "Edge", "IE" ]
+        },
+
+        "IgnoreKeepAwakeRequestsFromProcesses": {
+            "description": "Prevent certain processes from keeping the system awake",
+            "additionalProperties": {
+                "description": "Type of request",
+                "type": "string",
+                "enum": [ "DISPLAY", "SYSTEM", "AWAYMODE", "EXECUTION" ]
+            }
+        },
+
+        "CachedCredentials": {
+            "description": "Credentials to set up for Credentials Manager",
+            "type": "array",
+            "items": {
+                "required": [ "Type", "Name", "User" ],
+                "properties": {
+                    "Type": {
+                        "type": "string",
+                        "description": "Type of credential",
+                        "enum": [ "Generic", "Domain" ]
+                    },
+                    "Name": {
+                        "type": "string",
+                        "description": "Name of the credential"
+                    },
+                    "User": {
+                        "type": "string",
+                        "description": "User name"
+                    }
+                }
+            }
+        },
+
+        "ChocolateyPackages": {
+            "description": "Chocolatey packages to be installed",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "description": "Chocolatey package name"
+            }
+        },
+
+        "WindowsFeatures": {
+            "description": "Name of Windows Features to be installed (like 'NetFx3')",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+
+        "DesktopUrlShortcuts": {
+            "description": "Creates shortcuts for given URLs on the desktop",
+            "additionalProperties": {
+                "description": "A pair of shortcut name and the URL",
+                "type": "string"
+            }
+        },
+
+        "CommonStoreApps": {
+            "description": "Microsoft Store Apps to be installed",
+            "additionalProperties": {
+                "$ref": "#/definitions/storepackage"
+            }
+        },
+
+        "DevStoreApps": {
+            "description": "Microsoft Store Apps to be installed ",
+            "additionalProperties": {
+                "$ref": "#/definitions/storepackage"
+            }
+        },
+
+        "DeveloperMode": {
+            "description": "Enable Windows Developer Mode",
+            "$ref": "#/definitions/intbool"
+        },
+
+        "Linux": {
+            "description": "Enable Windows Subsystem for Linux",
+            "$ref": "#/definitions/intbool"
+        },
+
+        "WindowsCapabilities": {
+            "description": "Windows Capabilities to be enabled",
+            "additionalProperties": {
+                "type": "string",
+                "description": "A pair of capability name and capability ID (like OpenSSH.Client~~~~0.0.1.0)"
+            }
+        }
+    },
+
+    "definitions": {
+        "intbool": {
+            "type": "integer",
+            "description": "0 for false, 1 for true",
+            "enum": [0, 1]
+        },
+
+        "storepackage": {
+            "type": "string",
+            "description": "A pair of Appx package ID and Microsoft Store ID for the application"
+        }
+    }
+}
