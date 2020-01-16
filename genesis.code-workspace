@@ -5,6 +5,9 @@
 		}
 	],
 	"settings": {
-        "editor.rulers": [110]
+        "editor.rulers": [110],
+        "yaml.schemas": {
+            "./genesis-config-schema.json": "/*"
+        }
     }
 }

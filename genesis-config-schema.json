@@ -4,9 +4,14 @@
     "title": "Genesis Configuration",
     "description": "This schema defines the configuration file format used by Genesis",
 
+    "additionalProperties": false,
     "properties": {
+        "$schema": {
+            "type": "string"
+        },
         "Keyboard": {
             "description": "Keyboard related settings",
+            "additionalProperties": false,
             "properties": {
                 "Delay": {
                     "description": "Keyboard press repeat delay",
@@ -25,6 +30,7 @@
 
         "Explorer": {
             "description": "Windows Explorer settings",
+            "additionalProperties": false,
             "properties": {
                 "ShowFileExtensions": {
                     "description": "Show filename extensions",
@@ -40,6 +46,7 @@
 
         "TaskBar": {
             "description": "TaskBar settings",
+            "additionalProperties": false,
             "properties": {
                 "ShowPeopleButton": {
                     "description": "Show People button",
@@ -61,8 +68,9 @@
 
         "Network": {
             "description": "Network settings",
+            "additionalProperties": false,
             "properties": {
-                "ActiveNetworkConnectionCategory": {
+                "ActiveConnectionNetworkCategory": {
                     "description": "Setup the active network connection as public or private",
                     "type": "string",
                     "enum": [ "Private", "Public" ]
@@ -72,6 +80,7 @@
 
         "SpecialFolders": {
             "description": "Special folder settings",
+            "additionalProperties": false,
             "properties": {
                 "Downloads": {
                     "description": "Location of the Downloads folder",
@@ -82,6 +91,7 @@
 
         "WindowsDefender": {
             "description": "Windows Defender settings",
+            "additionalProperties": false,
             "properties": {
                 "ExclusionPaths": {
                     "description": "List of paths to be excluded from Windows Defender's realtime scanning",
