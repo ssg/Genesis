@@ -16,7 +16,7 @@ automation. I decided to use this for a learning opportunity.
 
 ## Running Genesis
 
-First, examine the contents of `SampleConfig.psd1` and edit as necessary. Don't
+First, examine the contents of `SampleConfig.yaml` and edit as necessary. Don't
 forget that your changes will be permanent and irreversible (I hope to fix that
 in the future). Then run the command below on a PowerShell prompt:
 
