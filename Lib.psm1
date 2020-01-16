@@ -111,7 +111,7 @@ function Assert-StoreAppsInstalled {
     param(
         $Apps
     )
-    if ($Apps -eq $null) {
+    if ($null -eq $Apps) {
         Write-Warning "Store apps config not found"
         return $false
     }
@@ -206,7 +206,7 @@ function Assert-Configuration {
     )
     Write-Progress $Name
     if (& $Script) {
-        Write-Output "restart needed..."
+        return $true
     }
 }
 
