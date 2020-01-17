@@ -44,15 +44,14 @@ I don't want to spend too much time on this project, that's one of the
 reasons why I used PowerShell as it was the simplest way to do it. I'd
 like to add some features though:
 
-* [X] Add checks for non-Store apps (chocolatey integration maybe?) although
-  I'm not very fond of Chocolatey.
-* [X] Get config file as a parameter.
-* [X] Switch to a portable configuration format.
+* [X] ~~Add checks for non-Store apps (chocolatey integration maybe?) although I'm not very fond of Chocolatey.
+* [X] ~~Get config file as a parameter.
+* [X] ~~Switch to a portable configuration format.
 * [ ] Use readable boolean values instead of 0 and 1 for flags options.
 * [ ] Better structured progress and log output
 * [ ] Ability to generate config files from existing state of a system.
 * [ ] Support PowerShell Confirm/WhatIf system.
-* [X] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`.
+* [X] ~~Easier installation using PowerShellGet, e.g. `Install-Module Genesis`.
 * [ ] Rollback changes
 * [ ] Modularize configuration handling better.
 * [ ] End-user friendly (GUI, profile management etc.).
