@@ -9,27 +9,34 @@ deal about PowerShell in return, which was a bonus.
 You might I ask why I didn't use something like Microsoft Configuration Manager
 for that. It looked very complicated for my purposes and requires a client running
 on the machine which is absolutely unnecessary for my personal use. I later found
-out about Desired State Configuration which looks much better and doesn't require 
-a client as far as I know, but by default it lacks many types of resources that 
-I require and finding them in the wild seemed to be hard. I just needed a simple 
+out about Desired State Configuration which looks much better and doesn't require
+a client as far as I know, but by default it lacks many types of resources that
+I require and finding them in the wild seemed to be hard. I just needed a simple
 automation. I decided to use this for a learning opportunity.
 
-## Running Genesis
+## Installation
+
+Type this on the command line:
+
+```powershell
+Install-Module Genesis
+```
+
+## Running
 
 First, examine the contents of `SampleConfig.yaml` and edit as necessary. Don't
 forget that your changes will be permanent and irreversible (I hope to fix that
 in the future). Then run the command below on a PowerShell prompt:
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process
-.\Setup SampleConfig.psd1
+Update-SystemConfiguration SampleConfig.yaml
 ```
 
 It will make necessary changes on your system and install Chocolatey and required
 packages as needed. Genesis changes system settings, it never removes a file, or
 uninstalls an app. So the worst can be weird settings and some additional unwanted
-software installed on your computer. You should still be careful running tools like
-these though.
+software installed on your computer. You should still be careful running such tools
+though.
 
 ## Roadmap
 
@@ -42,9 +49,10 @@ like to add some features though:
 * [X] Get config file as a parameter.
 * [X] Switch to a portable configuration format.
 * [ ] Use readable boolean values instead of 0 and 1 for flags options.
+* [ ] Better structured progress and log output
 * [ ] Ability to generate config files from existing state of a system.
 * [ ] Support PowerShell Confirm/WhatIf system.
-* [ ] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`.
+* [X] Easier installation using PowerShellGet, e.g. `Install-Module Genesis`.
 * [ ] Rollback changes
 * [ ] Modularize configuration handling better.
 * [ ] End-user friendly (GUI, profile management etc.).

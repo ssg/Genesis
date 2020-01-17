@@ -8,8 +8,8 @@
             "name": "PowerShell: Launch Script",
             "type": "PowerShell",
             "request": "launch",
-            "script": "${workspaceFolder}\\Setup.ps1",
-            "args": [" D:\\OneDrive\\dev\\SSG.psd1"],
+            "script": ".\\Test.ps1",
+            "args": [],
             "cwd": "${workspaceFolder}"
         }
     ]
