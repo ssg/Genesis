@@ -16,7 +16,7 @@ automation. I decided to use this for a learning opportunity.
 
 ## Installation
 
-Type this on the command line:
+Type this on the PowerShell prompt:
 
 ```powershell
 Install-Module Genesis
@@ -26,7 +26,7 @@ Install-Module Genesis
 
 First, examine the contents of `SampleConfig.yaml` and edit as necessary. Don't
 forget that your changes will be permanent and irreversible (I hope to fix that
-in the future). Then run the command below on a PowerShell prompt:
+in the future). Then run the command below on an *Administrator* PowerShell prompt:
 
 ```powershell
 Update-SystemConfiguration SampleConfig.yaml
