@@ -1,6 +1,6 @@
 # Genesis
 
-![psgallery](https://img.shields.io/powershellgallery/v/Genesis)
+[![psgallery](https://img.shields.io/powershellgallery/v/Genesis)](https://www.powershellgallery.com/packages/Genesis)
 
 I've been reinstalling my box a lot lately. So this is my personal Windows 10
 setup script for making initial configuration easier. I think it would save
