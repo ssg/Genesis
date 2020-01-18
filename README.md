@@ -1,5 +1,7 @@
 # Genesis
 
+![psgallery](https://img.shields.io/powershellgallery/v/Genesis)
+
 I've been reinstalling my box a lot lately. So this is my personal Windows 10
 setup script for making initial configuration easier. I think it would save
 me about 30 minutes per setup; if I can automate software installs, even much
