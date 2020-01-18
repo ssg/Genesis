@@ -59,6 +59,10 @@ like to add some features though:
 * [ ] Modularize configuration handling better.
 * [ ] End-user friendly (GUI, profile management etc.).
 
+Planned configuration options:
+
+* [ ] Quick Access: Show recently used files and frequently accessed folders.
+
 ## License
 
 MIT License. See LICENSE file for details.
