@@ -61,7 +61,7 @@ like to add some features though:
 
 Planned configuration options:
 
-* [ ] Quick Access: Show recently used files and frequently accessed folders.
+* [ ] Explorer Quick Access: Show recently used files and frequently accessed folders.
 
 ## License
 
