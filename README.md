@@ -49,6 +49,7 @@ like to add some features though:
 * [X] ~~Add checks for non-Store apps (chocolatey integration maybe?) although I'm not very fond of Chocolatey.~~
 * [X] ~~Get config file as a parameter.~~
 * [X] ~~Switch to a portable configuration format.~~
+* [ ] Use Chocolatey package provider instead of the tool
 * [ ] Use readable boolean values instead of 0 and 1 for flags options.
 * [ ] Better structured progress and log output
 * [ ] Ability to generate config files from existing state of a system.
