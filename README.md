@@ -62,6 +62,7 @@ like to add some features though:
 Planned configuration options:
 
 * [ ] Explorer Quick Access: Show recently used files and frequently accessed folders.
+* [ ] Explorer System Tray: EnableAutoTray
 
 ## License
 
