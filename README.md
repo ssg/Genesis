@@ -52,6 +52,7 @@ like to add some features though:
 * [ ] Use Chocolatey package provider instead of the tool
 * [ ] Use readable boolean values instead of 0 and 1 for flags options.
 * [ ] Better structured progress and log output
+* [ ] Signed packages
 * [ ] Ability to generate config files from existing state of a system.
 * [ ] Support PowerShell Confirm/WhatIf system.
 * [X] ~~Easier installation using PowerShellGet, e.g. `Install-Module Genesis`.~~
