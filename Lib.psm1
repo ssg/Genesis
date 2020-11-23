@@ -88,7 +88,11 @@ function Assert-RegistryValue {
     if (!(Test-Path $Path)) {
         New-Item -Path $Path -Force
     }
-    $prop = (Get-ItemProperty -Path $Path | Select-Object -ExpandProperty $Name)
+    try {
+        $prop = (Get-ItemProperty -Path $Path | Select-Object -ExpandProperty $Name)
+    } catch {
+        $prop = $null
+    }
     if ($prop -ne $Value) {
         Write-Progress "updating..."
         Set-ItemProperty -Path $Path -Name $Name -Type $Type -Value $Value
