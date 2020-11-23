@@ -2,6 +2,9 @@
 #Requires -Version 5.0
 #Requires -Modules FXPSYaml
 
+# We want to handle errors explicitly.
+$ErrorActionPreference = "Stop"
+
 function Update-SystemConfiguration {
 <#
 .SYNOPSIS
@@ -35,10 +38,11 @@ function Update-SystemConfiguration {
         [string]$ComputerName
     )
 
-    # We want to handle errors explicitly.
-    $ErrorActionPreference = "Stop"
-
     $Config = ConvertFrom-Yaml -Path $ConfigFile
+
+    if ($null -eq $Config) {
+        throw "File cannot be loaded: $ConfigFile"
+    }
 
     Write-Debug "Starting asserts"
     Assert-Configuration "Computer name" {
