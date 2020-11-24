@@ -6,9 +6,9 @@
         {
             "label": "Run",
             "type": "process",
-            "command": "powershell.exe",
+            "command": "pwsh.exe",
             "args": [
-                "Import-Module .\\Genesis.psm1; Update-SystemConfiguration; Remove-Module Genesis"
+                "Import-Module .\\Genesis.psd1; Update-SystemConfiguration; Remove-Module Genesis"
             ],
             "problemMatcher": []
         }
