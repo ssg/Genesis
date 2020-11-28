@@ -37,7 +37,11 @@ function Get-Browser {
     param(
         $Name
     )
-    return $Browsers[$Name]
+    $browser = $Browsers[$Name]
+    if ($browser -eq $null) {
+        throw "Invalid browser name: $Name"
+}
+    return $browser
 }
 
 function Set-RestartNeeded {
