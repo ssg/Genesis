@@ -114,7 +114,7 @@
             "additionalProperties": {
                 "description": "Type of request",
                 "type": "string",
-                "enum": [ "DISPLAY", "SYSTEM", "AWAYMODE", "EXECUTION" ]
+                "enum": [ "DRIVER", "DISPLAY", "SYSTEM", "AWAYMODE", "EXECUTION" ]
             }
         },
 
