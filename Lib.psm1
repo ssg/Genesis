@@ -1,4 +1,4 @@
-<#
+﻿<#
 This module contains library cmdlets for Genesis
 #>
 
@@ -40,7 +40,7 @@ function Get-Browser {
     $browser = $Browsers[$Name]
     if ($browser -eq $null) {
         throw "Invalid browser name: $Name"
-}
+    }
     return $browser
 }
 
@@ -57,13 +57,14 @@ function Assert-SpecialFolder {
         $Name,
         $PreferredLocation
     )
+    Write-Debug "Checking special folder $Name for $PreferredLocation"
     if (!(Test-Path $PreferredLocation)) {
         Write-Output "Creating new $Name folder at: $PreferredLocation"
         mkdir $PreferredLocation
     }
     $regName = $SpecialFolders[$Name]
     Write-Progress "  $Name..."
-    [void] (Assert-SpecialFolderPath -Name $regName -FolderPath $PreferredLocation)
+    Assert-SpecialFolderPath -Name $regName -FolderPath $PreferredLocation
 }
 
 function Assert-NoKeepAwake {
@@ -71,9 +72,11 @@ function Assert-NoKeepAwake {
         $Process,
         $Mode
     )
+    $args = @("/requestsoverride", "PROCESS", $Process, $Mode)
+    Write-Debug "Running powercfg $args"
     # it's harmless to redo this configuration each time so we don't
     # necessarily check for existing config values
-    & powercfg /requestsoverride PROCESS $Process $Mode
+    & powercfg $args
 }
 
 function Assert-RegistryValue {
@@ -87,22 +90,24 @@ function Assert-RegistryValue {
         # skip this if relevant configuration information is missing
         # therefore the function is called unnecessarily
         Write-Warning "Missing configuration option for registry $Path\$Name"
-        return $false
+        return
     }
+    Write-Debug "Checking registry path $Path"
     if (!(Test-Path $Path)) {
+        Write-Debug "Creating registry path $Path"
         New-Item -Path $Path -Force
     }
     try {
+        Write-Debug "Getting registry property $Name from $Path"
         $prop = (Get-ItemProperty -Path $Path | Select-Object -ExpandProperty $Name)
     } catch {
+        Write-Debug "Error getting registry property $Name from $Path"
         $prop = $null
     }
     if ($prop -ne $Value) {
         Write-Progress "updating..."
         Set-ItemProperty -Path $Path -Name $Name -Type $Type -Value $Value
-        return $true
     }
-    return $false
 }
 
 function Assert-SpecialFolderPath {
@@ -121,17 +126,14 @@ function Assert-StoreAppsInstalled {
     )
     if ($null -eq $Apps) {
         Write-Warning "Store apps config not found"
-        return $false
+        return
     }
     foreach ($name in $Apps.Keys) {
         Write-Progress "  $name..."
         $item = (Get-AppxPackage | Where-Object { $_.Name -eq $name })
         if ($null -eq $item) {
             $productId = $Apps[$name]
-            Write-Output "needs to be installed"
             Start-Process "https://www.microsoft.com/store/productId/$productId"
-        } else {
-            Write-Output "OK"
         }
     }
 }
@@ -146,17 +148,14 @@ function Assert-DesktopShortcut {
     if (!(Test-Path $filename)) {
         Write-Progress "downloading..."
         Invoke-WebRequest -Uri $Url -OutFile $filename
-        return $true
     }
     Write-Progress "nice..."
-    return $false
 }
 
 function Assert-ChocolateyPackages {
     param(
         [string[]]$Packages
     )
-    $result = $false
     $list = choco list --id-only --local-only --limit-output
     [System.Collections.Generic.HashSet[string]]$installedPackages = $list
     foreach ($name in $Packages) {
@@ -164,10 +163,8 @@ function Assert-ChocolateyPackages {
         if ($installedPackages -notcontains $name) {
             Write-Progress "installing"
             & choco install $Name -y
-            $result = $true
         }
     }
-    return $result
 }
 
 function Assert-WindowsFeature {
@@ -179,9 +176,7 @@ function Assert-WindowsFeature {
     {
         Write-Progress "enabling $Name..."
         Enable-WindowsOptionalFeature -FeatureName $Name -Online -All -NoRestart
-        return $true
     }
-    return $false
 }
 
 function Assert-WindowsCapability {
@@ -193,9 +188,7 @@ function Assert-WindowsCapability {
     if ($state -ne 'Installed') {
         Write-Progress "installing $Name..."
         Add-WindowsCapability -Online -Name $Id
-        return $true
     }
-    return $false
 }
 
 function Test-DefaultBrowser {
@@ -212,10 +205,9 @@ function Assert-Configuration {
         $Name,
         $Script
     )
+    Write-Debug "Setting up $Name"
     Write-Progress $Name
-    if (& $Script) {
-        return $true
-    }
+    & $Script
 }
 
 function Set-RecycleBinCapacity {
@@ -223,16 +215,11 @@ function Set-RecycleBinCapacity {
         $Volume,
         $Capacity
     )
-    [void] (Assert-RegistryValue `
+    Assert-RegistryValue `
         -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Bitbucket\Volume\$Volume" `
-        -Name MaxCapacity -Type Dword -Value $Capacity)
+        -Name MaxCapacity -Type Dword -Value $Capacity
 }
 
 function Get-DesktopPath {
     return [Environment]::GetFolderPath("Desktop")
-}
-
-function Wait-ForEnter {
-    Write-Output "Press ENTER to continue..."
-    Read-Host | Out-Null
 }

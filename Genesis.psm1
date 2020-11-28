@@ -34,10 +34,11 @@ function Update-SystemConfiguration {
         [string]$ComputerName
     )
 
+    Write-Debug "Reading configuration file $ConfigFile"
     $Config = ConvertFrom-Yaml -Path $ConfigFile
 
     if ($null -eq $Config) {
-        throw "File cannot be loaded: $ConfigFile"
+        throw "Configuration file $ConfigFile cannot be loaded"
     }
 
     Write-Debug "Starting asserts"
@@ -52,7 +53,7 @@ function Update-SystemConfiguration {
         }
     }
 
-    Write-Output "Setting up $env:ComputerName"
+    Write-Output "Working on $env:ComputerName"
 
     Assert-Configuration "Keyboard" {
         [void] (Assert-RegistryValue -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Type Dword `
@@ -93,8 +94,8 @@ function Update-SystemConfiguration {
 
     Assert-Configuration "Explorer" {
         # file extensions
-        [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-                -Name "HideFileExt" -Type Dword -Value $Config.Explorer.ShowFileExtensions)
+        Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
+                -Name "HideFileExt" -Type Dword -Value $Config.Explorer.ShowFileExtensions
         # recycle bin capacity
         Get-ChildItem "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Bitbucket\Volume" `
         | ForEach-Object {
@@ -103,12 +104,12 @@ function Update-SystemConfiguration {
     }
 
     Assert-Configuration "Taskbar" {
-        [void] (Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-                -Name "People" -Type Dword -Value $Config.TaskBar.ShowPeopleButton)
-        [void] (Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
-                -Name "ShowTaskViewButton" -Type Dword -Value $Config.TaskBar.ShowTaskViewButton)
-        [void] (Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" `
-                -Name "SearchboxTaskbarMode" -Type Dword -Value $Config.TaskBar.SearchboxTaskbarMode)
+        Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
+                -Name "People" -Type Dword -Value $Config.TaskBar.ShowPeopleButton
+        Assert-RegistryValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
+                -Name "ShowTaskViewButton" -Type Dword -Value $Config.TaskBar.ShowTaskViewButton
+        Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" `
+                -Name "SearchboxTaskbarMode" -Type Dword -Value $Config.TaskBar.SearchboxTaskbarMode
     }
 
     if ($Config.SpecialFolders) {
@@ -125,25 +126,23 @@ function Update-SystemConfiguration {
             # install chocolatey
             Set-ExecutionPolicy Bypass -Scope Process -Force
             Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-            return $true
         }
-        return $false
     }
 
     Assert-Configuration "Default browser" {
+        $browser = $Config.DefaultBrowser
+        Write-Debug "Checking if default browser is $browser"
         $defaultBrowser = (Get-Browser $Config.DefaultBrowser)
         $builtIn = !($defaultBrowser.LocalPath);
         if (!$builtIn -and !(Test-Path $defaultBrowser.LocalPath)) {
-            Write-Output "installing..."
+            Write-Output "installing external $browser..."
             & choco install $defaultBrowser.ChocolateyPackage -y
         }
         else {
-            Write-Output "$($Config.DefaultBrowser) is already installed, checking if it's the default..."
-            if (!(Test-DefaultBrowser $defaultBrowser.Tag)) {
-                Write-Output "nope :("
-                Write-Output "Please ensure $($defaultBrowser.Name) is the default browser - opening settings app"
+            Write-Output "$browser is already installed"
+            if (-not (Test-DefaultBrowser $defaultBrowser.Tag)) {
+                Write-Output "Please ensure $browser is the default browser - opening settings app"
                 Start-Process "ms-settings:defaultapps"
-                Wait-ForEnter
             }
         }
     }
@@ -175,23 +174,20 @@ function Update-SystemConfiguration {
                 Write-Progress "enabling..."
                 Enable-WindowsOptionalFeature -FeatureName Microsoft-Windows-Subsystem-Linux -Online -All `
                     -LimitAccess -NoRestart
-                return $true
             }
         }
     }
 
     Assert-Configuration "Developer mode" {
-        return (Assert-RegistryValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" `
-                -Name AllowDevelopmentWithoutDevLicense -Type Dword -Value $Config.DeveloperMode)
+        Assert-RegistryValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" `
+                -Name AllowDevelopmentWithoutDevLicense -Type Dword -Value $Config.DeveloperMode
     }
 
     Assert-Configuration "Windows capabilities" {
-        $result = $false
         $Config.WindowsCapabilities.Keys | ForEach-Object {
             $id = $Config.WindowsCapabilities[$_]
-            $result = $result -or (Assert-WindowsCapability -Name $_ -Id $id)
+            Assert-WindowsCapability -Name $_ -Id $id
         }
-        return $result
     }
 
     if ($Config.IgnoreKeepAwakeRequestsFromProcesses) {
@@ -208,16 +204,15 @@ function Update-SystemConfiguration {
         foreach ($path in $exclusions) {
             Add-MpPreference -ExclusionPath $path
         }
-        return !!$exclusions
     }
 
     Assert-Configuration "Development related Microsoft Store apps" {
-        [void] (Assert-StoreAppsInstalled $Config.DevStoreApps)
+        Assert-StoreAppsInstalled $Config.DevStoreApps
     }
 
     if ($Config.ChocolateyPackages) {
         Assert-Configuration "Chocolatey packages" {
-            return Assert-ChocolateyPackages $Config.ChocolateyPackages
+            Assert-ChocolateyPackages $Config.ChocolateyPackages
         }
     }
 
