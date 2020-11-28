@@ -21,15 +21,11 @@ function Update-SystemConfiguration {
 .NOTES
     Author:         Sedat Kapanoglu
 #>
+    [CmdletBinding()]
     param(
         # YAML Configuration file to use for setup.
         [Parameter(Mandatory)]
-        [ValidateScript( {
-                if (Test-Path -PathType Leaf $_) {
-                    return $true
-                }
-                throw "File not found: $_"
-            })]
+        [ValidateScript({ Test-Path -PathType Leaf $_ })]
         [System.IO.FileInfo]$ConfigFile,
 
         # Set computer name, otherwise you get prompted
