@@ -1,4 +1,4 @@
-﻿<#
+<#
 This module contains library cmdlets for Genesis
 #>
 
@@ -18,7 +18,7 @@ $Browsers = @{
         Tag = "FirefoxURL"
     }
     "Edge" = @{
-        Tag = "AppXq0fevzme2pys62n3e0fbqa7peapykr8v"
+        Tag = "MSEdgeHTM"
     }
     "InternetExplorer" = @{
         Tag = "IE.HTTP"
