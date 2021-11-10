@@ -96,11 +96,16 @@ function Update-SystemConfiguration {
         # file extensions
         Assert-RegistryValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" `
                 -Name "HideFileExt" -Type Dword -Value $Config.Explorer.ShowFileExtensions
+
         # recycle bin capacity
         Get-ChildItem "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Bitbucket\Volume" `
         | ForEach-Object {
             Set-RecycleBinCapacity -Volume (Split-Path $_.Name -Leaf) -Capacity $Config.Explorer.MaxRecycleBinCapacity
         }
+
+        # DisableSearchBoxSuggestions
+        Assert-RegistryValue -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" `
+                -Name "DisableSearchBoxSuggestions" -Type Dword -Value $Config.Explorer.DisableSearchBoxSuggestions
     }
 
     Assert-Configuration "Taskbar" {

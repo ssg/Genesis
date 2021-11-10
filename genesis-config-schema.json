@@ -40,6 +40,10 @@
                     "description": "Maximum Recycle Bin capacity in megabytes",
                     "type": "integer",
                     "minimum": 0
+                },
+                "DisableSearchBoxSuggestions": {
+                    "description": "Disable Bing in the start menu search results",
+                    "$ref": "#/definitions/intbool"
                 }
             }
         },

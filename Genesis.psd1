@@ -11,7 +11,7 @@
 RootModule = 'Genesis.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.9.0'
+ModuleVersion = '0.10.0'
 
 # ID used to uniquely identify this module
 GUID = 'affa8efc-c8fa-43a0-a2dd-e93f3ecb162d'

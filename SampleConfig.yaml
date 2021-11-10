@@ -11,6 +11,7 @@ Keyboard:
 Explorer:
   ShowFileExtensions: 1 # changes the HideFileExt registry entry
   MaxRecycleBinCapacity: 1024 # MB - applies to all drives on the system
+  DisableSearchBoxSuggestions: 1 # disable Bing on the start menu
 
 TaskBar:
   ShowPeopleButton: 0
